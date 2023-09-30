@@ -19,6 +19,7 @@ const Create: FC<PageProps> = ({ auth }) => {
         recentlySuccessful,
     } = useForm({
         name: "",
+        nim: "",
         email: "",
         password: "",
     });
@@ -77,6 +78,26 @@ const Create: FC<PageProps> = ({ auth }) => {
 
                                     <InputError
                                         message={errors.name}
+                                        className="mt-2"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel htmlFor="nim" value="Nim" />
+
+                                    <TextInput
+                                        id="nim"
+                                        name="nim"
+                                        value={data.nim}
+                                        isFocused={true}
+                                        onChange={(e) =>
+                                            setData("nim", e.target.value)
+                                        }
+                                        className="mt-1 block w-full"
+                                    />
+
+                                    <InputError
+                                        message={errors.nim}
                                         className="mt-2"
                                     />
                                 </div>

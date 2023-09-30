@@ -33,18 +33,37 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink
-                                    href={route("students.index")}
-                                    active={route().current("students.index")}
-                                >
-                                    Student
-                                </NavLink>
-                                <NavLink
-                                    href={route("quizzes.index")}
-                                    active={route().current("quizzes.index")}
-                                >
-                                    Quiz
-                                </NavLink>
+                                {user.is_admin === 1 ? (
+                                    <>
+                                        <NavLink
+                                            href={route("students.index")}
+                                            active={route().current(
+                                                "students.index"
+                                            )}
+                                        >
+                                            Student
+                                        </NavLink>
+                                        <NavLink
+                                            href={route("quizzes.index")}
+                                            active={route().current(
+                                                "quizzes.index"
+                                            )}
+                                        >
+                                            Quiz
+                                        </NavLink>
+                                    </>
+                                ) : (
+                                    <>
+                                        <NavLink
+                                            href={route("my-quizzes.index")}
+                                            active={route().current(
+                                                "my-quizzes.index"
+                                            )}
+                                        >
+                                            Quiz
+                                        </NavLink>
+                                    </>
+                                )}
                             </div>
                         </div>
 

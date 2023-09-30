@@ -29,6 +29,7 @@ const Page: FC<PageProps<{ students: User[] }>> = ({ auth, students }) => {
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
                                             <th className="px-6 py-3">Name</th>
+                                            <th className="px-6 py-3">Nim</th>
                                             <th className="px-6 py-3">Email</th>
                                         </tr>
                                     </thead>
@@ -40,6 +41,9 @@ const Page: FC<PageProps<{ students: User[] }>> = ({ auth, students }) => {
                                             >
                                                 <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                                     {student.name}
+                                                </th>
+                                                <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                    {student.nim}
                                                 </th>
                                                 <td className="px-6 py-4">
                                                     {student.email}

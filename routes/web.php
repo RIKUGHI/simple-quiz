@@ -19,6 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    // return Inertia::render('Quiz');
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -29,7 +30,8 @@ Route::get('/', function () {
 
 Route::group([
     'prefix' => 'students',
-    'as' => 'students.'
+    'as' => 'students.',
+    'middleware' => ['auth', 'admin']
 ], function () {
     Route::get('/', [StudentController::class, 'index'])->name('index');
     Route::get('/create', [StudentController::class, 'create'])->name('create');
@@ -38,14 +40,26 @@ Route::group([
 
 Route::group([
     'prefix' => 'quizzes',
-    'as' => 'quizzes.'
+    'as' => 'quizzes.',
+    'middleware' => ['auth', 'admin']
 ], function () {
     Route::get('/', [QuizController::class, 'index'])->name('index');
     Route::get('/create', [QuizController::class, 'create'])->name('create');
     Route::post('/create', [QuizController::class, 'store'])->name('store');
-    // Route::get('/{uuid}/score', [QuizController::class, 'score'])->name('score');
-    // Route::get('/', [QuizController::class, 'index'])->name('index');
-    // Route::get('/{uuid}/score', [QuizController::class, 'score'])->name('score');
+    Route::get('/{id}', [QuizController::class, 'detail'])->name('detail');
+    Route::get('/{id}/create', [QuizController::class, 'detailCreate'])->name('detail.create');
+    Route::post('/{id}/create', [QuizController::class, 'detailStore'])->name('detail.store');
+});
+
+Route::group([
+    'prefix' => 'my-quizzes',
+    'as' => 'my-quizzes.',
+    'middleware' => ['auth', 'student']
+], function () {
+    Route::get('/', [QuizController::class, 'myQuizzes'])->name('index');
+    Route::get('/{id}', [QuizController::class, 'myDetailQuiz'])->name('detail');
+    Route::post('/{id}', [QuizController::class, 'myDetailQuizStore'])->name('store');
+    Route::get('/{id}/score', [QuizController::class, 'myDetailQuizScore'])->name('score');
 });
 
 

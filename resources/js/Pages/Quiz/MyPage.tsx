@@ -3,7 +3,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { FC } from "react";
 
-const Page: FC<PageProps<{ quizzes: Quiz[] }>> = ({ auth, quizzes, flash }) => {
+const MyPage: FC<PageProps<{ quizzes: Quiz[] }>> = ({
+    auth,
+    quizzes,
+    flash,
+}) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -57,21 +61,34 @@ const Page: FC<PageProps<{ quizzes: Quiz[] }>> = ({ auth, quizzes, flash }) => {
                                                 <td className="px-6 py-4">
                                                     <Link
                                                         href={route(
-                                                            "quizzes.detail",
+                                                            "my-quizzes.detail",
                                                             { id: quiz.id }
                                                         )}
+                                                        className={`${
+                                                            quiz.done_count ===
+                                                            1
+                                                                ? "bg-green-600"
+                                                                : "bg-blue-600"
+                                                        } p-2 rounded-full text-white`}
                                                     >
-                                                        Detail
-                                                    </Link>{" "}
-                                                    /{" "}
-                                                    <Link
-                                                        href={route(
-                                                            "quizzes.detail.create",
-                                                            { id: quiz.id }
-                                                        )}
-                                                    >
-                                                        Tambah
+                                                        {quiz.done_count === 1
+                                                            ? "Lihat Hasil"
+                                                            : quiz.answers_count >
+                                                              0
+                                                            ? "Lanjutkan"
+                                                            : "Kerjakan"}
                                                     </Link>
+                                                    {quiz.done_count === 1 && (
+                                                        <Link
+                                                            href={route(
+                                                                "my-quizzes.score",
+                                                                { id: quiz.id }
+                                                            )}
+                                                            className={`bg-purple-600 ml-2 p-2 rounded-full text-white`}
+                                                        >
+                                                            Score
+                                                        </Link>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
@@ -86,4 +103,4 @@ const Page: FC<PageProps<{ quizzes: Quiz[] }>> = ({ auth, quizzes, flash }) => {
     );
 };
 
-export default Page;
+export default MyPage;
