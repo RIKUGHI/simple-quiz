@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('question_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('question_id')->constrained();
+            $table->string('photo')->nullable();
             $table->string('question');
             $table->string('a');
             $table->string('b');
             $table->string('c');
             $table->string('d');
+            $table->string('e');
             $table->string('correct_answer');
+            $table->string('explain');
             $table->timestamps();
         });
     }

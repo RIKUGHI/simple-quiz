@@ -20,11 +20,14 @@ export interface Quiz {
 export interface QuizDetail {
     id: number;
     question_id: number;
+    photo: null | string;
+    explain: null | string;
     question: string;
     a: string;
     b: string;
     c: string;
     d: string;
+    e: string;
     correct_answer: string;
 }
 

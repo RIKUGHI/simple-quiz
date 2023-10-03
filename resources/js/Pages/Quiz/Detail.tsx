@@ -14,8 +14,6 @@ const Detail: FC<PageProps<{ quiz: Quiz; questionDetails: QuizDetail[] }>> = ({
     quiz,
     questionDetails,
 }) => {
-    console.log(questionDetails);
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -53,16 +51,24 @@ const Detail: FC<PageProps<{ quiz: Quiz; questionDetails: QuizDetail[] }>> = ({
                                 {questionDetails.map((d) => (
                                     <Fragment key={d.id}>
                                         <div className="space-y-6 pb-10">
+                                            {d.photo && (
+                                                <div>
+                                                    <img
+                                                        src={`${window.location.origin}/storage/${d.photo}`}
+                                                        alt="empty"
+                                                    />
+                                                </div>
+                                            )}
                                             <div>
-                                                <InputLabel
-                                                    htmlFor={`question`}
-                                                    value={`Pertanyaan`}
-                                                />
-
                                                 <p>
                                                     Jawaban benar adalah{" "}
                                                     <b>{d.correct_answer}</b>
                                                 </p>
+
+                                                <InputLabel
+                                                    htmlFor={`question`}
+                                                    value={`Pertanyaan`}
+                                                />
 
                                                 <TextInput
                                                     id={`question`}
@@ -140,6 +146,32 @@ const Detail: FC<PageProps<{ quiz: Quiz; questionDetails: QuizDetail[] }>> = ({
                                                     />
                                                 </div>
                                             </div>
+
+                                            <div>
+                                                <InputLabel
+                                                    htmlFor={`email_e`}
+                                                    value={"E"}
+                                                />
+
+                                                <div className="flex items-center">
+                                                    <TextInput
+                                                        id={`email_e`}
+                                                        name={`email_e`}
+                                                        value={d.e}
+                                                        readOnly
+                                                        className="mt-1 block w-full"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {d.explain && (
+                                                <div>
+                                                    <img
+                                                        src={`${window.location.origin}/storage/${d.explain}`}
+                                                        alt="empty"
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </Fragment>
                                 ))}

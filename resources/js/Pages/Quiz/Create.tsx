@@ -1,13 +1,12 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PageProps, User } from "@/types";
+import { PageProps } from "@/types";
 import { Transition } from "@headlessui/react";
 import { Head, useForm } from "@inertiajs/react";
-import { FC, FormEventHandler, useEffect } from "react";
+import { FC, FormEventHandler, useEffect, useState } from "react";
 
 const Create: FC<PageProps> = ({ auth }) => {
     const {
@@ -19,12 +18,15 @@ const Create: FC<PageProps> = ({ auth }) => {
         reset,
         recentlySuccessful,
     } = useForm({
+        photo: null,
+        explain: null,
         title: "",
         question: "",
         a: "",
         b: "",
         c: "",
         d: "",
+        e: "",
         correct_answer: "",
     });
 
@@ -34,25 +36,10 @@ const Create: FC<PageProps> = ({ auth }) => {
         };
     }, []);
 
-    // const addQuestion = () => {
-    //     setData("questions", [
-    //         ...data.questions,
-    //         {
-    //             question: "",
-    //             a: "",
-    //             b: "",
-    //             c: "",
-    //             d: "",
-    //             correct_answer: "",
-    //             explain: "",
-    //         },
-    //     ]);
-    // };
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("quizzes.store"));
+        post(route("quizzes.store"), { forceFormData: true });
     };
 
     return (
@@ -76,7 +63,62 @@ const Create: FC<PageProps> = ({ auth }) => {
                                 </h2>
                             </header>
 
-                            <form onSubmit={submit} className="mt-6 space-y-10">
+                            <form
+                                onSubmit={submit}
+                                className="mt-6 space-y-10"
+                                encType="multipart/form-data"
+                            >
+                                <div>
+                                    <InputLabel
+                                        htmlFor="photo"
+                                        value="Gambar (optional)"
+                                    />
+
+                                    <TextInput
+                                        id="photo"
+                                        name="photo"
+                                        type="file"
+                                        onChange={(e) => {
+                                            const file = e.target
+                                                .files?.[0] as any;
+                                            if (file) {
+                                                setData("photo", file);
+                                            }
+                                        }}
+                                        className="mt-1 block w-full"
+                                    />
+
+                                    <InputError
+                                        message={errors.photo}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="explain"
+                                        value="Penjelasan"
+                                    />
+
+                                    <TextInput
+                                        id="explain"
+                                        name="explain"
+                                        type="file"
+                                        onChange={(e) => {
+                                            const file = e.target
+                                                .files?.[0] as any;
+                                            if (file) {
+                                                setData("explain", file);
+                                            }
+                                        }}
+                                        className="mt-1 block w-full"
+                                    />
+
+                                    <InputError
+                                        message={errors.explain}
+                                        className="mt-2"
+                                    />
+                                </div>
+
                                 <div>
                                     <InputLabel htmlFor="title" value="Judul" />
 
@@ -274,6 +316,45 @@ const Create: FC<PageProps> = ({ auth }) => {
 
                                         <InputError
                                             message={errors.d}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
+                                            htmlFor={`email_e`}
+                                            value={"E"}
+                                        />
+
+                                        <div className="flex items-center">
+                                            <TextInput
+                                                id={`email_e`}
+                                                name={`email_e`}
+                                                value={data.e}
+                                                onChange={(e) => {
+                                                    setData(
+                                                        "e",
+                                                        e.target.value
+                                                    );
+                                                }}
+                                                className="mt-1 block w-full"
+                                            />
+
+                                            <TextInput
+                                                name={`correct`}
+                                                type="radio"
+                                                className="ml-2"
+                                                onChange={(e) => {
+                                                    setData(
+                                                        "correct_answer",
+                                                        "e"
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+
+                                        <InputError
+                                            message={errors.e}
                                             className="mt-2"
                                         />
                                     </div>

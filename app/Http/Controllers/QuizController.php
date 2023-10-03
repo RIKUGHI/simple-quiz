@@ -32,9 +32,10 @@ class QuizController extends Controller
             'b' => 'required',
             'c' => 'required',
             'd' => 'required',
+            'e' => 'required',
             'correct_answer' => 'required',
         ]);
-        
+
         try {
             DB::transaction(function () use ($request) {
                 $question = Question::create([
@@ -42,12 +43,15 @@ class QuizController extends Controller
                 ]);
                 
                 $question->questionDetails()->create([
+                    'photo' => $request->hasFile('photo') ? $request->file('photo')->store('pictures', 'public') : null,
                     'question' => $request->question,
                     'a' => $request->a,
                     'b' => $request->b,
                     'c' => $request->c,
                     'd' => $request->d,
+                    'e' => $request->e,
                     'correct_answer' => $request->correct_answer,
+                    'explain' => $request->hasFile('explain') ? $request->file('explain')->store('pictures', 'public') : null,
                 ]);
             });
 
@@ -79,18 +83,22 @@ class QuizController extends Controller
             'b' => 'required',
             'c' => 'required',
             'd' => 'required',
+            'e' => 'required',
             'correct_answer' => 'required',
         ]);
 
         $quiz = Question::query()->withCount('questionDetails')->where('id', $id)->first();
 
         $quiz->questionDetails()->create([
+            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('pictures', 'public') : null,
             'question' => $request->question,
             'a' => $request->a,
             'b' => $request->b,
             'c' => $request->c,
             'd' => $request->d,
+            'e' => $request->e,
             'correct_answer' => $request->correct_answer,
+            'explain' => $request->hasFile('explain') ? $request->file('explain')->store('pictures', 'public') : null,
         ]);
 
         return redirect('/quizzes');
@@ -118,8 +126,8 @@ class QuizController extends Controller
                 ->first();
 
         $select = [
-            'id', 'question_id', 'question',
-            'a', 'b', 'c', 'd'
+            'id', 'question_id', 'question', 'photo',
+            'a', 'b', 'c', 'd', 'e', 'explain'
         ];
 
         if ($questionDone) {

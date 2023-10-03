@@ -19,8 +19,11 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create()
     {
+        if (request()->get('key') !== 'regis') {
+            return redirect('login');
+        }
         return Inertia::render('Auth/Register');
     }
 
